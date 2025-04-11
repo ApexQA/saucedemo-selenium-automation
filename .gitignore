@@ -32,5 +32,8 @@ vcs.xml
 modules.xml
 misc.xml
 
+# Maven build output
+target/
+
 # macOS
 .DS_Store
