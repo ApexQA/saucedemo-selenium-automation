@@ -9,12 +9,12 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.LoginPage;
+import pages.CheckoutPage;
 import utilities.ConfigReader;
 
 import java.time.Duration;
 
-public class LoginTests {
+public class CheckoutTest {
     private WebDriver driver;
 
     @BeforeMethod
@@ -23,31 +23,28 @@ public class LoginTests {
         options.addArguments("--start-maximized"); // Ensure GUI is visible
         // Remove headless argument if present:
         options.addArguments("--headless");
-
         driver = new ChromeDriver();
         driver.get(ConfigReader.getProperty("base.url"));
     }
 
     @Test(timeOut = 10000) // Test will fail if it takes longer than 10 seconds
-    public void testValidLogin() {
+    public void testValidCheckout() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5000));
-        LoginPage loginPage = new LoginPage(driver);
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
 
-        loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
-        loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
-        loginPage.clickLogin();
-        wait.until(ExpectedConditions.urlContains("/inventory.html"));
-        System.out.println("Login successful! :" + driver.getCurrentUrl());
+        checkoutPage.clickCheckoutButton();
+        wait.until(ExpectedConditions.urlContains("/checkout-step-one.html"));
+        System.out.println("Getting into checkout page is successful! :" + driver.getCurrentUrl());
         new WebDriverWait(driver, Duration.ofSeconds(5000));
 
         // Add assertions to verify login success
-        String expectedUrl = "https://www.saucedemo.com/inventory.html";
+        String expectedUrl = "https://www.saucedemo.com/v1/checkout-step-one.html";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");    }
 
     @AfterMethod
     public void tearDown() {
         // Close the browser
-        //driver.quit();
+        driver.quit();
     }
 }
