@@ -29,7 +29,7 @@ public class FilesUtils {
 
     public static void deleteFiles(File dirPath) {
         if (dirPath == null || !dirPath.exists()) {
-            LogsUtil.warn("Dirctory does not exist: " + dirPath);
+            LogsUtil.warn("Directory does not exist: " + dirPath);
         }
 
         File[] filesList = dirPath.listFiles();

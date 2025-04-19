@@ -2,10 +2,7 @@ package listeners;
 
 import org.apache.commons.io.FileUtils;
 import org.testng.*;
-import utilities.AllureUtils;
-import utilities.FilesUtils;
-import utilities.LogsUtil;
-import utilities.ScreenshotsUtils;
+import utilities.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +31,12 @@ public class TestNGListeners implements IExecutionListener, ITestListener, IInvo
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
         if (method.isTestMethod()) {
+            try{
+                CustomSoftAssertion.customAssertAll();
+            } catch (AssertionError e){
+                testResult.setStatus(ITestResult.FAILURE);
+                testResult.setThrowable(e);
+            }
             switch (testResult.getStatus())
             {
                 case ITestResult.SUCCESS -> ScreenshotsUtils.takeScreenshot("passed-" + testResult.getName());

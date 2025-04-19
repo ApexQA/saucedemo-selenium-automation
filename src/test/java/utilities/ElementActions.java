@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.lang.module.FindException;
+
 public class ElementActions {
     private ElementActions(){
     }
@@ -38,4 +40,13 @@ public class ElementActions {
         LogsUtil.info("Finding element: ", locator.toString());
         return driver.findElement(locator);
     }
+
+    public static String getTextFromInput(WebDriver driver, By locator){
+        Waits.waitForElementVisible(driver, locator);
+        Scrolling.scrollToElement(driver, locator);
+        LogsUtil.info("Getting text from the input field: " + locator.toString(), " Text: ", findElement(driver, locator).getDomAttribute("value"));
+        return findElement(driver, locator).getDomAttribute("value");
+    }
+
+
 }

@@ -6,9 +6,10 @@ import utilities.ElementActions;
 
 public class CheckoutPage {
 
-    //Locators
+    //variables
     private WebDriver driver;
-    //private final By CheckoutButton = By.("a.btn_action checkout_button");
+
+    //locators
     private final By checkoutButton = By.xpath("//a[@href='./checkout-step-one.html']");
 
     //constructor

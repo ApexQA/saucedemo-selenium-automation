@@ -3,12 +3,7 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-import utilities.BrowserActions;
-import utilities.CustomSoftAssertion;
-import utilities.ElementActions;
-import utilities.Validations;
-
+import utilities.*;
 import static utilities.PropertiesUtils.getPropertyValue;
 
 public class LoginPage {
@@ -29,7 +24,7 @@ public class LoginPage {
     //Navigate to the login page
     @Step("Navigating the login page")
     public void navigateToLoginPage(){
-       BrowserActions.navigateToURL(driver, "https://www.saucedemo.com/");
+       BrowserActions.navigateToURL(driver, PropertiesUtils.getPropertyValue("baseURL"));
     }
 
     // Actions

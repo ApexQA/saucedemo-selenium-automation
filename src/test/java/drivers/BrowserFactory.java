@@ -85,7 +85,8 @@ public class BrowserFactory {
         Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
                 "credentials_enable_service", false,
                 "profile.password_manager_enabled", false,
-                "autofill.profile.enabled", false);
+                "autofill.profile.enabled", false,
+                "profile.password_manager_leak_detection", false);
         chromeOptions.setExperimentalOption("prefs", chromePrefs);
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         return chromeOptions;
