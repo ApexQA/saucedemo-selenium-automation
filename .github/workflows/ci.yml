@@ -42,21 +42,44 @@ jobs:
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
           google-chrome --version || echo "Chrome installation failed"
 
-      # Step 5: Install ChromeDriver matching Chrome version
-      - name: Install matching ChromeDriver
+      # Step 5: Detect Chrome version
+      - name: Detect Chrome version
         run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*}")
-          echo "Installing ChromeDriver version: $CHROMEDRIVER_VERSION"
-          wget --no-verbose https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+' || true)
+          echo "Detected Chrome version: $CHROME_VERSION"
+          if [ -z "$CHROME_VERSION" ]; then
+            echo "Failed to detect Chrome version."
+            exit 1
+          fi
+
+      # Step 6: Validate ChromeDriver URL
+      - name: Validate ChromeDriver URL
+        run: |
+          CHROMEDRIVER_VERSION="134.0.6892.71"  # Specify a known working version
+          echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION"
+          echo "Download URL: https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+
+      # Step 7: Download and install ChromeDriver
+      - name: Install ChromeDriver
+        run: |
+          CHROMEDRIVER_VERSION="134.0.6892.71"  # Specify a known working version
+          wget --verbose https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
+          echo "ChromeDriver installed successfully."
 
-      # Step 6: Install dependencies
+      # Step 8: Set up Xvfb virtual display
+      - name: Set up Xvfb virtual display
+        run: |
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 &
+
+      # Step 9: Install dependencies
       - name: Install dependencies
         run: mvn clean install
 
-      # Step 7: Run Selenium tests
+      # Step 10: Run Selenium tests
       - name: Run Selenium tests
         run: mvn test
