@@ -3,10 +3,10 @@ name: Selenium CI
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger on pull requests to the main branch
+      - main
 
 jobs:
   test:
@@ -39,7 +39,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # Step 5: Install ChromeDriver
+      # Step 5: Verify Chrome installation
+      - name: Verify Google Chrome installation
+        run: |
+          google-chrome --version || echo "Google Chrome is not installed"
+
+      # Step 6: Detect Chrome version
+      - name: Detect Chrome version
+        run: |
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
+          echo "Detected Chrome version: $CHROME_VERSION"
+
+      # Step 7: Validate ChromeDriver URL
+      - name: Validate ChromeDriver URL
+        run: |
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
+          echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+          echo "Download URL: https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+
+      # Step 8: Install ChromeDriver
       - name: Install ChromeDriver
         run: |
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
@@ -49,17 +68,17 @@ jobs:
           sudo mv chromedriver /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
 
-      # Step 6: Set up a virtual display (Xvfb) for non-headless mode
+      # Step 9: Set up Xvfb virtual display
       - name: Set up Xvfb virtual display
         run: |
           sudo apt-get install -y xvfb
           export DISPLAY=:99
           Xvfb :99 -screen 0 1024x768x24 &
 
-      # Step 7: Install dependencies
+      # Step 10: Install dependencies
       - name: Install dependencies
         run: mvn clean install
 
-      # Step 8: Run Selenium tests
+      # Step 11: Run Selenium tests
       - name: Run Selenium tests
         run: mvn test
