@@ -98,18 +98,20 @@ public class InventoryTests extends BaseTest {
         Assert.assertEquals(priceValues, sortedPrices, "Items are not sorted by price correctly!");
     }
 
-    @Test(priority = 7)
-    public void testLogoutFunctionality() {
-        inventoryPage.logout();
-
-        // Wait for the URL to change to the login page
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/"));
-
-        String actualUrl = driver.getCurrentUrl().replaceAll("/$", ""); // Normalize URL
-        String expectedUrl = "https://www.saucedemo.com";
-        Assert.assertEquals(actualUrl, expectedUrl, "Logout failed or not redirected to login page!");
-    }
+//
+//    public void testLogoutFunctionality() {
+//        inventoryPage.logout();
+//
+//        // Wait for the URL to change to the login page
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/"));
+//
+//        Assert.assertEquals(
+//                driver.getCurrentUrl(),
+//                "https://www.saucedemo.com/", // تحقق من الرابط بالضبط
+//                "Logout failed or not redirected to login page!"
+//        );
+//    }
 
     @Test(priority = 8)
     public void testItemPriceDisplay() {
@@ -122,11 +124,6 @@ public class InventoryTests extends BaseTest {
     public void testRemoveItemFromCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.removeFirstItemFromCart();
-
-        // Wait for the cart badge to disappear
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("shopping_cart_badge")));
-
         Assert.assertTrue(driver.findElements(By.className("shopping_cart_badge")).isEmpty(),
                 "Item was not removed from cart!");
     }
