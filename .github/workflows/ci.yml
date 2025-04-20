@@ -1,0 +1,86 @@
+name: Selenium CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up JDK
+      - name: Set up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      # Step 3: Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4: Install Google Chrome
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget curl unzip
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
+          google-chrome --version || echo "Chrome installation failed"
+
+      # Step 5: Detect Chrome version
+      - name: Detect Chrome version
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
+          echo "Detected Chrome version: $CHROME_VERSION"
+          if [ -z "$CHROME_VERSION" ]; then
+            echo "Failed to detect Chrome version."
+            exit 1
+          fi
+
+      # Step 6: Validate ChromeDriver URL
+      - name: Validate ChromeDriver URL
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
+          CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
+          echo "Using ChromeDriver URL: $CHROMEDRIVER_URL"
+
+      # Step 7: Download and install ChromeDriver
+      - name: Install ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
+          CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
+          wget --verbose "$CHROMEDRIVER_URL"
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
+          chmod +x /usr/local/bin/chromedriver
+          echo "ChromeDriver installed successfully."
+
+      # Step 8: Set up Xvfb virtual display
+      - name: Set up Xvfb virtual display
+        run: |
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 &
+
+      # Step 9: Install dependencies
+      - name: Install dependencies
+        run: mvn clean install
+
+      # Step 10: Run Selenium tests
+      - name: Run Selenium tests
+        run: mvn test

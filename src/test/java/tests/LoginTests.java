@@ -1,53 +1,33 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import SwagLabs.pages.LoginPage;
+import utilities.BaseTest;
 import SwagLabs.utilites.ConfigReader;
 
 import java.time.Duration;
 
-public class LoginTests {
-    private WebDriver driver;
+public class LoginTests  extends BaseTest {
 
-    @BeforeMethod
-    public void setup() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // Ensure GUI is visible
-        // Remove headless argument if present:
-        options.addArguments("--headless");
-
-        driver = new ChromeDriver();
-        driver.get(ConfigReader.getProperty("base.url"));
-    }
-
-    @Test(timeOut = 10000) // Test will fail if it takes longer than 10 seconds
+    @Test(timeOut = 10000)
     public void testValidLogin() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
         loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
         loginPage.clickLogin();
+
+        // Wait for the URL to contain "/inventory.html"
         wait.until(ExpectedConditions.urlContains("/inventory.html"));
-        System.out.println("Login successful! :" + driver.getCurrentUrl());
-        new WebDriverWait(driver, Duration.ofSeconds(5000));
+        System.out.println("Login successful! Current URL: " + driver.getCurrentUrl());
 
         // Add assertions to verify login success
         String expectedUrl = "https://www.saucedemo.com/inventory.html";
         String actualUrl = driver.getCurrentUrl();
-        Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");    }
-
-    @AfterMethod
-    public void tearDown() {
-        // Close the browser
-        //driver.quit();
+        Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");
     }
 }
