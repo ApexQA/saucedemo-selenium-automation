@@ -3,6 +3,8 @@ package tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,6 +13,7 @@ import pages.LoginPage;
 import utilities.BaseTest;
 import utilities.ConfigReader;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,17 +25,15 @@ public class InventoryTests extends BaseTest {
 
     @BeforeMethod
     public void setupTest() {
-        // 1. Automatic login
+        // Automatic login
         LoginPage loginPage = new LoginPage(driver);
         loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
         loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
         loginPage.clickLogin();
 
-        // 2. Initialize inventory page
+        // Initialize inventory page
         inventoryPage = new InventoryPage(driver);
     }
-
-    // ---------------------- Basic Tests ----------------------
 
     @Test(priority = 1)
     public void testInventoryPageTitle() {
@@ -53,10 +54,12 @@ public class InventoryTests extends BaseTest {
     public void testOpenShoppingCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.openShoppingCart();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.urlContains("/cart.html"));
+
         Assert.assertTrue(driver.getCurrentUrl().contains("/cart.html"), "Cart page did not open!");
     }
-
-    // ---------------------- Additional Tests ----------------------
 
     @Test(priority = 4)
     public void testItemDetailsDisplayed() {
@@ -65,15 +68,20 @@ public class InventoryTests extends BaseTest {
     }
 
     @Test(priority = 5)
-    public void testMultipleItemsAddToCart() {
+    public void testAddMultipleItemsToCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.addFirstItemToCart(); // Add same item twice (quantity test)
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.className("shopping_cart_badge"), "2"));
+
         Assert.assertEquals(
                 driver.findElement(By.className("shopping_cart_badge")).getText(),
                 "2",
                 "Quantity is incorrect!"
         );
     }
+
     @Test(priority = 6)
     public void testPriceFilterLowToHigh() {
         // تطبيق الفلتر والتحقق من الأسعار
@@ -93,11 +101,14 @@ public class InventoryTests extends BaseTest {
     @Test(priority = 7)
     public void testLogoutFunctionality() {
         inventoryPage.logout();
-        Assert.assertEquals(
-                driver.getCurrentUrl(),
-                "https://www.saucedemo.com/", // تحقق من الرابط بالضبط
-                "Logout failed or not redirected to login page!"
-        );
+
+        // Wait for the URL to change to the login page
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/"));
+
+        String actualUrl = driver.getCurrentUrl().replaceAll("/$", ""); // Normalize URL
+        String expectedUrl = "https://www.saucedemo.com";
+        Assert.assertEquals(actualUrl, expectedUrl, "Logout failed or not redirected to login page!");
     }
 
     @Test(priority = 8)
@@ -111,6 +122,11 @@ public class InventoryTests extends BaseTest {
     public void testRemoveItemFromCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.removeFirstItemFromCart();
+
+        // Wait for the cart badge to disappear
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("shopping_cart_badge")));
+
         Assert.assertTrue(driver.findElements(By.className("shopping_cart_badge")).isEmpty(),
                 "Item was not removed from cart!");
     }
