@@ -25,7 +25,7 @@ public class CartPageTests {
     @Test(description = "Verify product name and price on Cart Page")
     public void testProductDetails() {
         String expectedProductName = "Sauce Labs Backpack";
-        String expectedProductPrice = "29.99";
+        String expectedProductPrice = "$29.99";
 
         cartPage.assertProductDetails(expectedProductName, expectedProductPrice);
 
