@@ -55,20 +55,14 @@ jobs:
       # Step 6: Validate ChromeDriver URL
       - name: Validate ChromeDriver URL
         run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+' || true)
-          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
-          echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          echo "Latest ChromeDriver version: $CHROMEDRIVER_VERSION"
           echo "Download URL: https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-          if [ -z "$CHROMEDRIVER_VERSION" ]; then
-            echo "Failed to fetch ChromeDriver version."
-            exit 1
-          fi
 
       # Step 7: Download and install ChromeDriver
       - name: Install ChromeDriver
         run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+' || true)
-          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
           wget --verbose https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
