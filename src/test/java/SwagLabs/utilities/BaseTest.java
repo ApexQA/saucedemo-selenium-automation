@@ -1,4 +1,4 @@
-package utilities;
+package SwagLabs.utilities;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;

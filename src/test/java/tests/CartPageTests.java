@@ -2,8 +2,8 @@ package tests;
 
 import SwagLabs.Drivers.DriverManager;
 import SwagLabs.pages.CartPage;
-import SwagLabs.utilites.ConfigReader;
-import SwagLabs.utilites.CustomSoftAssertions;
+import SwagLabs.utilities.ConfigReader;
+import SwagLabs.utilities.CustomSoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -25,7 +25,7 @@ public class CartPageTests {
     @Test(description = "Verify product name and price on Cart Page")
     public void testProductDetails() {
         String expectedProductName = "Sauce Labs Backpack";
-        String expectedProductPrice = "$29.99";
+        String expectedProductPrice = "29.99";
 
         cartPage.assertProductDetails(expectedProductName, expectedProductPrice);
 

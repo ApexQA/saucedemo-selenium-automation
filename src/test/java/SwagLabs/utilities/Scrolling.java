@@ -1,4 +1,4 @@
-package SwagLabs.utilites;
+package SwagLabs.utilities;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;

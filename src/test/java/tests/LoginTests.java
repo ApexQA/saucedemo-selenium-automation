@@ -5,8 +5,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import SwagLabs.pages.LoginPage;
-import utilities.BaseTest;
-import SwagLabs.utilites.ConfigReader;
+import SwagLabs.utilities.BaseTest;
+import SwagLabs.utilities.ConfigReader;
 
 import java.time.Duration;
 

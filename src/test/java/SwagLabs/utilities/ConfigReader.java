@@ -1,4 +1,4 @@
-package SwagLabs.utilites;
+package SwagLabs.utilities;
 
 import java.io.FileInputStream;
 import java.util.Properties;

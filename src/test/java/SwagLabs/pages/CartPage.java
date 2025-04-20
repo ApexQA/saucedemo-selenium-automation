@@ -1,8 +1,7 @@
 package SwagLabs.pages;
 
-import SwagLabs.utilites.ElementActions;
-import SwagLabs.utilites.Validations;
-import SwagLabs.utilites.*;
+import SwagLabs.utilities.ElementActions;
+import SwagLabs.utilities.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
