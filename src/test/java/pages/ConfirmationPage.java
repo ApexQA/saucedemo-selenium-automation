@@ -16,8 +16,7 @@ public class ConfirmationPage {
     }
 
     //locators
-    private final By confirmationMessage = By.cssSelector("complete-header");
-
+    private final By confirmationMessage = By.cssSelector("[data-test='complete-header']");
     //actions
     @Step("Get confirmation message")
     public String getConfrirmationMessage(){
