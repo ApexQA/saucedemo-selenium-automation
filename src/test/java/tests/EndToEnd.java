@@ -12,7 +12,7 @@ import utilities.BrowserActions;
 import utilities.ConfigReader;
 
 @Listeners(TestNGListeners.class)
-public class E2e {
+public class EndToEnd {
     private WebDriver driver;
 
     // Test methods with proper dependencies

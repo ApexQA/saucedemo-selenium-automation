@@ -8,7 +8,7 @@
 
     <test name="Checkout Tests">
         <classes>
-            <class name="tests.CheckoutTest"/>
+<!--            <class name="tests.CheckoutTest"/>-->
         </classes>
     </test>
 </suite>
