@@ -33,10 +33,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Install dependencies
+      # Step 4: Install Google Chrome
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # Step 5: Install ChromeDriver
+      - name: Install ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
+          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
+          wget -q https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          chmod +x /usr/local/bin/chromedriver
+
+      # Step 6: Set up a virtual display (Xvfb) for non-headless mode
+      - name: Set up Xvfb virtual display
+        run: |
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 &
+
+      # Step 7: Install dependencies
       - name: Install dependencies
         run: mvn clean install
 
-      # Step 5: Run tests
+      # Step 8: Run Selenium tests
       - name: Run Selenium tests
         run: mvn test
