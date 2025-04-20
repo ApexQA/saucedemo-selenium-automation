@@ -45,7 +45,7 @@ jobs:
       # Step 5: Detect Chrome version
       - name: Detect Chrome version
         run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+' || true)
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
           echo "Detected Chrome version: $CHROME_VERSION"
           if [ -z "$CHROME_VERSION" ]; then
             echo "Failed to detect Chrome version."
@@ -55,17 +55,18 @@ jobs:
       # Step 6: Validate ChromeDriver URL
       - name: Validate ChromeDriver URL
         run: |
-          CHROMEDRIVER_VERSION="134.0.6892.71"  # Specify a known working version
-          echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION"
-          echo "Download URL: https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
+          CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
+          echo "Using ChromeDriver URL: $CHROMEDRIVER_URL"
 
       # Step 7: Download and install ChromeDriver
       - name: Install ChromeDriver
         run: |
-          CHROMEDRIVER_VERSION="134.0.6892.71"  # Specify a known working version
-          wget --verbose https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
+          CHROME_VERSION=$(google-chrome --version | grep -oP '(?<=Google Chrome )\d+\.\d+\.\d+\.\d+' || true)
+          CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
+          wget --verbose "$CHROMEDRIVER_URL"
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
           echo "ChromeDriver installed successfully."
 
