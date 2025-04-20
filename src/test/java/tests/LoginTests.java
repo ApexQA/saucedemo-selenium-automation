@@ -21,10 +21,10 @@ public class LoginTests {
     public void setup() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized"); // Ensure GUI is visible
-        // Remove headless argument if present:
-        options.addArguments("--headless");
+        options.addArguments("--disable-dev-shm-usage"); // Avoid shared memory issues
+        options.addArguments("--no-sandbox"); // Required for CI environments
 
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.get(ConfigReader.getProperty("base.url"));
     }
 
