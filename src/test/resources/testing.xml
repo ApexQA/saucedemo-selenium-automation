@@ -13,4 +13,10 @@
             <class name="tests.InventoryTests"/>
         </classes>
     </test>
+    <!-- CartPage Tests -->
+    <test name="CartPage Tests">
+        <classes>
+            <class name="tests.CartPageTests"/>
+        </classes>
+    </test>
 </suite>

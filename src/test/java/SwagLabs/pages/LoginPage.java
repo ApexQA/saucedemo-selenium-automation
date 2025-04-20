@@ -1,4 +1,4 @@
-package pages;
+package SwagLabs.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,10 +22,12 @@ public class LoginPage {
     }
 
     public void enterPassword(String password) {
+
         driver.findElement(passwordInput).sendKeys(password);
     }
 
     public void clickLogin() {
+
         driver.findElement(loginButton).click();
     }
 }
