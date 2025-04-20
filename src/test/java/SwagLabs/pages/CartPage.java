@@ -1,9 +1,9 @@
-package pages;
+package SwagLabs.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utilities.ElementActions;
-import utilities.Validations;
+import SwagLabs.utilities.ElementActions;
+import SwagLabs.utilities.Validations;
 
 public class CartPage {
     private WebDriver driver;
