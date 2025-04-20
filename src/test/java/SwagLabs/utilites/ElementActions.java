@@ -28,7 +28,7 @@ public class ElementActions {
         return findElement(driver, locator).getText();
     }
     public static WebElement findElement(WebDriver driver, By locator){
+
         return driver.findElement(locator);
     }
 }
-

@@ -3,16 +3,16 @@ package SwagLabs.utilities;
 import org.openqa.selenium.WebDriver;
 
 public class BrowserActions {
-    private BrowserActions(){
+    private BrowserActions() {
     }
 
     //Navigate to URL
-    public static void navigateToURL(WebDriver driver, String url){
+    public static void navigateToURL(WebDriver driver, String url) {
         driver.get(url);
     }
 
     //Get current URL
-    public static String getCurrentURL(WebDriver driver){
+    public static String getCurrentURL(WebDriver driver) {
         return driver.getCurrentUrl();
     }
 
@@ -22,7 +22,12 @@ public class BrowserActions {
     }
 
     //refresh page
-    public static void refreshPage(WebDriver driver){
+    public static void refreshPage(WebDriver driver) {
         driver.navigate().refresh();
     }
+
+    public static void closeBrowser(WebDriver driver) {
+        driver.quit();
+    }
 }
+
