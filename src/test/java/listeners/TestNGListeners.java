@@ -61,5 +61,4 @@ public class TestNGListeners implements IExecutionListener, ITestListener, IInvo
     public void onTestSkipped(ITestResult result){
         LogsUtil.info("Test case", result.getTestName(), "skipped");
     }
-
 }

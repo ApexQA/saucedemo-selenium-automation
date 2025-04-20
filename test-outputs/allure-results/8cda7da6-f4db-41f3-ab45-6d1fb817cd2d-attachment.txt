@@ -1,0 +1,37 @@
+[DEBUG] - [20-04-2025 11:51:32] [main] [org.testng.TestNG] - suiteXmlPath: "/Volumes/Data/DEPI/Tech/Projects/saucedemo-selenium-automation/src/test/resources/testing.xml"
+[INFO] - [20-04-2025 11:51:33] [main] [listeners.TestNGListeners] - Logs Execution Started
+[INFO] - [20-04-2025 11:51:33] [main] [utilities.PropertiesUtils] - Loading Properties File Data
+[INFO] - [20-04-2025 11:51:33] [main] [org.testng.internal.Utils] - [TestNG] Running:
+  /Volumes/Data/DEPI/Tech/Projects/saucedemo-selenium-automation/src/test/resources/testing.xml
+
+[INFO] - [20-04-2025 11:51:36] [main] [drivers.DriverManager] - Driver is created on: Chrome
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.BrowserActions] - Navigated to URL:  https://www.saucedemo.com/
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.Waits] - Waiting for element to be visible:  By.id: user-name
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.Waits] - Waiting for element to be present:  By.id: user-name
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.Scrolling] - Scrolling to the element:  By.id: user-name
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.ElementActions] - Finding element:  By.id: user-name
+[INFO] - [20-04-2025 11:51:37] [main] [utilities.ElementActions] - Finding element:  By.id: user-name
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Data is created:  standard_user in the field:  By.id: user-name
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Waits] - Waiting for element to be visible:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Waits] - Waiting for element to be present:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Scrolling] - Scrolling to the element:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Finding element:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Finding element:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Data is created:  secret_sauce in the field:  By.id: password
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Waits] - Waiting for element to be clickable:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Waits] - Waiting for element to be visible:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Waits] - Waiting for element to be present:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.Scrolling] - Scrolling to the element:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Finding element:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Finding element:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.ElementActions] - Clicked on the element:  By.id: login-button
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.BrowserActions] - Current URL:  https://www.saucedemo.com/inventory.html
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.AllureUtils] - Logs attached to Allure report.
+[INFO] - [20-04-2025 11:51:38] [main] [listeners.TestNGListeners] - Test case null passed
+[INFO] - [20-04-2025 11:51:38] [main] [utilities.BrowserActions] - Closing the browser
+[ERROR] - [20-04-2025 11:51:39] [main] [utilities.ScreenshotsUtils] - Failed to take screenshot: Session ID is null. Using WebDriver after calling quit()?
+Build info: version: '4.29.0', revision: '5fc1ec94cb'
+System info: os.name: 'Mac OS X', os.arch: 'aarch64', os.version: '14.4.1', java.version: '23.0.1'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [null, screenshot {}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 135.0.7049.96, chrome: {chromedriverVersion: 135.0.7049.95 (de2eb485a195..., userDataDir: /var/folders/2r/kjwk61x96tz...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:51072}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: mac, proxy: Proxy(), se:cdp: ws://localhost:51072/devtoo..., se:cdpVersion: 135.0.7049.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
