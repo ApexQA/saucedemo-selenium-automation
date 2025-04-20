@@ -1,23 +1,25 @@
 package SwagLabs.pages;
 
+import SwagLabs.utilites.ElementActions;
+import SwagLabs.utilites.Validations;
+import SwagLabs.utilites.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import SwagLabs.utilities.ElementActions;
-import SwagLabs.utilities.Validations;
 
 public class CartPage {
+    //Variables
     private WebDriver driver;
-    //elements locators
-    private By productName= By.cssSelector("inventory_item_name");
-    private By productPrice= By.cssSelector("inventory_item_price");
-    private By checkoutButton= By.cssSelector(".checkout_button");
-
-    // Constructor
-    public CartPage(WebDriver driver) {
-        this.driver = driver;
+    //Constructor
+    public CartPage(WebDriver driver){
+        this.driver=driver;
     }
+    //Locators
+    private final By productName= By.cssSelector(".inventory_item_name");
+    private final By productPrice= By.cssSelector(".inventory_item_price");
+    private final By checkoutButton=By.linkText("CHECKOUT");
 
     //Actions
+
     public String getProductName(){
         return ElementActions.getText(driver,productName);
     }
@@ -26,16 +28,20 @@ public class CartPage {
     }
     public CartPage clickCheckoutButton(){
         ElementActions.clickElement(driver,checkoutButton);
-         return this;
+        return this;
     }
 
     //Validations
-    public CartPage assertProductDetails(String productName, String productPrice) {
-        String actualProductName = getProductName();
-        String actualProductPrice = getProductPrice();
-        Validations.validateEquals(actualProductName, productName, "Product name mismatch");
-        Validations.validateEquals(actualProductPrice, productPrice, "Product price mismatch");
+    public CartPage assertProductDetails(String productName, String productPrice){
+        String actualProductName= getProductName();
+        String actualProductPrice= getProductPrice();
+        CustomSoftAssertions.softAssertion.assertEquals(actualProductName,productName,"Product Name mismatch");
+        CustomSoftAssertions.softAssertion.assertEquals(actualProductPrice,productPrice,"Product Price mismatch");
         return this;
     }
+    String actualProductName= getProductName();
+
+
+
 }
 
