@@ -39,9 +39,6 @@ public class CartPage {
         CustomSoftAssertions.softAssertion.assertEquals(actualProductPrice,productPrice,"Product Price mismatch");
         return this;
     }
-    String actualProductName= getProductName();
-
-
 
 }
 
