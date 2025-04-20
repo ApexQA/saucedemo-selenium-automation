@@ -24,31 +24,38 @@ public class LoginTests {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
-        WebDriver driver = new ChromeDriver(options);
+
+        // Initialize the class-level 'driver' variable
+        driver = new ChromeDriver(options);
+        System.out.println("Driver initialized: " + (driver != null)); // Debugging log
 
         driver.get(ConfigReader.getProperty("base.url"));
     }
 
     @Test(timeOut = 10000) // Test will fail if it takes longer than 10 seconds
     public void testValidLogin() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
         loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
         loginPage.clickLogin();
+
+        // Wait for the URL to contain "/inventory.html"
         wait.until(ExpectedConditions.urlContains("/inventory.html"));
-        System.out.println("Login successful! :" + driver.getCurrentUrl());
-        new WebDriverWait(driver, Duration.ofSeconds(5000));
+        System.out.println("Login successful! Current URL: " + driver.getCurrentUrl());
 
         // Add assertions to verify login success
         String expectedUrl = "https://www.saucedemo.com/inventory.html";
         String actualUrl = driver.getCurrentUrl();
-        Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");    }
+        Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");
+    }
 
     @AfterMethod
     public void tearDown() {
         // Close the browser
-        //driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
