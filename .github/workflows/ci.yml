@@ -37,18 +37,29 @@ jobs:
       - name: Install Google Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          sudo apt-get install -y wget curl unzip
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
 
       # Step 5: Verify Chrome installation
       - name: Verify Google Chrome installation
         run: |
-          google-chrome --version || echo "Google Chrome is not installed"
+          if ! command -v google-chrome &> /dev/null; then
+            echo "Google Chrome is NOT installed."
+            exit 1
+          else
+            google-chrome --version
+          fi
 
       # Step 6: Detect Chrome version
       - name: Detect Chrome version
         run: |
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
           echo "Detected Chrome version: $CHROME_VERSION"
+          if [ -z "$CHROME_VERSION" ]; then
+            echo "Failed to detect Chrome version."
+            exit 1
+          fi
 
       # Step 7: Validate ChromeDriver URL
       - name: Validate ChromeDriver URL
@@ -57,16 +68,21 @@ jobs:
           CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
           echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
           echo "Download URL: https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+          if [ -z "$CHROMEDRIVER_VERSION" ]; then
+            echo "Failed to fetch ChromeDriver version."
+            exit 1
+          fi
 
-      # Step 8: Install ChromeDriver
+      # Step 8: Download and install ChromeDriver
       - name: Install ChromeDriver
         run: |
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F. '{print $1}')
           CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
-          wget -q https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
+          wget --verbose https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
+          echo "ChromeDriver installed successfully."
 
       # Step 9: Set up Xvfb virtual display
       - name: Set up Xvfb virtual display
