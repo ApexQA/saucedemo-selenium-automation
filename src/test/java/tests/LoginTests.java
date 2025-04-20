@@ -20,12 +20,12 @@ public class LoginTests {
     @BeforeMethod
     public void setup() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // Ensure GUI is visible
-        options.addArguments("--disable-dev-shm-usage"); // Avoid shared memory issues
-        options.addArguments("--no-sandbox"); // Required for CI environments
-        options.addArguments("--remote-allow-origins=*"); // Fix for Chrome 111+
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        WebDriver driver = new ChromeDriver(options);
 
-        driver = new ChromeDriver(options);
         driver.get(ConfigReader.getProperty("base.url"));
     }
 
