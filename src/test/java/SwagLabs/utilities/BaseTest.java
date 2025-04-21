@@ -31,9 +31,9 @@ public class BaseTest {
     @AfterMethod
     public void tearDown() {
         // Close the browser after each test
-        if (driver != null) {
-            driver.quit();
-            System.out.println("Browser closed.");
-        }
+//        if (driver != null) {
+//            driver.quit();
+//            System.out.println("Browser closed.");
+//        }
     }
 }

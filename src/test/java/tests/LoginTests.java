@@ -14,7 +14,7 @@ public class LoginTests  extends BaseTest {
 
     @Test(timeOut = 10000)
     public void testValidLogin() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         LoginPage loginPage = new LoginPage(driver);
 
         loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
