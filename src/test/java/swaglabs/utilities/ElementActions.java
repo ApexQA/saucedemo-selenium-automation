@@ -32,6 +32,7 @@ public class ElementActions {
             Waits.waitForElementVisible(driver, element); // Ensure visibility check [[2]]
             return element.isDisplayed(); // Native Selenium method [[5]]
         } catch (Exception e) {
+            System.out.println("Element not visible or not found");
             return false; // Element not visible or not found
         }
     }

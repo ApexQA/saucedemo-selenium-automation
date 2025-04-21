@@ -45,7 +45,7 @@ public class CartPageTests extends BaseTest {
     @Test(description = "Verify empty cart state")
     public void testEmptyCart() {
         cartPage.removeAllItems();
-//        cartPage.validateEmptyCart();
+        cartPage.validateEmptyCart();
         CustomSoftAssertions.customAssertAll();
     }
 
