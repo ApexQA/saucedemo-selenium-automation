@@ -4,6 +4,7 @@ import SwagLabs.Drivers.DriverManager;
 import SwagLabs.pages.*;
 import SwagLabs.utilities.BrowserActions;
 import SwagLabs.utilities.ConfigReader;
+import SwagLabs.utilities.ElementActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -16,6 +17,7 @@ public class CheckoutTests {
     String FIRST_NAME = ConfigReader.getProperty("information-form.firstName");
     String LAST_NAME = ConfigReader.getProperty("information-form.lastName");
     String POSTAL_CODE = ConfigReader.getProperty("information-form.postalCode");
+    private final By  cartIcon = By.cssSelector("[data-test='shopping-cart-link']");
 
     // Test methods with proper dependencies
     @Test(priority = 1)
@@ -32,19 +34,26 @@ public class CheckoutTests {
 
     @Test(dependsOnMethods = "successfulLogin")
     public void addingProductToCart() {
-        HomePage homePage = new HomePage(driver);
-        homePage.addSpecificProductToCart(ConfigReader.getProperty("product.1.name"));
-        homePage.assertProductAddedToCart(ConfigReader.getProperty("product.1.name"));
+        InventoryPage inventoryPage = new InventoryPage(driver);
+        inventoryPage.addFirstItemToCart();
     }
 
     @Test(dependsOnMethods = "addingProductToCart")
     public void checkoutProduct() {
-        new HomePage(driver).clickCartIcon()
-                .assertProductDetails(ConfigReader.getProperty("product.1.name"),
-                        ConfigReader.getProperty("product.1.price"));
+        ElementActions.clickElement(driver, cartIcon);
+    }
+    @Test(dependsOnMethods = "checkoutProduct")
+        public void checkout_CancelCheckout() {
+        new CartPage(driver).clickCheckoutButton();
+        new InformationPage(driver).clickCancelButton();
+        String message = "URL is not as expected";
+        String actualURL = ConfigReader.getProperty("cartURL");
+        String expectedURL = BrowserActions.getCurrentURL(driver);
+        Assert.assertEquals(actualURL, expectedURL, message);
+        ElementActions.clickElement(driver, cartIcon);
     }
 
-    @Test(dependsOnMethods = "checkoutProduct")
+    @Test(dependsOnMethods = "checkout_CancelCheckout")
     public void emptyFirtsNameValidation(){
         new CartPage(driver).clickCheckoutButton();
         InformationPage informationPage = new InformationPage(driver);
@@ -99,15 +108,6 @@ public class CheckoutTests {
         new OverviewPage(driver).clickOnFinishButton();
         new ConfirmationPage(driver).assertConfirmationMessage(ConfigReader.getProperty("confirmationMSG"));
     }
-
-/*    @Test(dependsOnMethods = "fillInformationForm")
-    public void cancelCheckout() {
-        new InformationPage(driver).clickCancelButton();
-        String message = "URL is not as expected";
-        String actualURL = ConfigReader.getProperty("cartURL");
-        String expectedURL = BrowserActions.getCurrentURL(driver);
-        Assert.assertEquals(actualURL, expectedURL, message);
-    }*/
 
     @BeforeClass
     public void setup() {

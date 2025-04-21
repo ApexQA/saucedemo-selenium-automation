@@ -1,5 +1,6 @@
 package SwagLabs.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import SwagLabs.utilities.ElementActions;
@@ -18,6 +19,7 @@ public class CheckoutPage {
     }
 
     //Actions
+    @Step("Click on checkout button")
     public void clickCheckoutButton(){
         ElementActions.clickElement(driver, checkoutButton);
     }
