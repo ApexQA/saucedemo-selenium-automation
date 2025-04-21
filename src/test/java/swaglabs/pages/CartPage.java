@@ -22,9 +22,6 @@ public class CartPage extends BasePage {
     @FindBy(id = "checkout")
     private WebElement checkoutButton;
 
-//?????
-    @FindBy(css = ".summary_total")
-    private WebElement totalPrice;
 
     @FindBy(css = ".empty_cart_message")
     private WebElement emptyCartMessage;
@@ -56,7 +53,7 @@ public class CartPage extends BasePage {
     }
 
     public CheckoutPage proceedToCheckout() {
-        //Waits.waitForElementClickable(driver, checkoutButton); // Wait for clickability [[7]]
+        Waits.waitForElementClickable(driver, checkoutButton); // Wait for clickability [[7]]
         ElementActions.clickElement(driver, checkoutButton);
         return new CheckoutPage(driver);
     }
@@ -118,6 +115,11 @@ public class CartPage extends BasePage {
         List<WebElement> items = driver.findElements(By.cssSelector(".cart_item"));
         CustomSoftAssertions.softAssertion.assertEquals(
                 items.size(), 0, "Cart is not empty as expected");
+        return this;
+    }
+
+    public CartPage clickCheckoutButton(){
+        ElementActions.clickElement(driver, checkoutButton);
         return this;
     }
 }

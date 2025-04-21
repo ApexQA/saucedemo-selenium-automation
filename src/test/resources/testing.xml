@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Saucedemo Automation Suite" >
+<suite name="Saucedemo Automation Suite">
     <!-- Login Tests -->
     <test name="Login Tests">
         <classes>
@@ -18,6 +18,13 @@
     <test name="CartPage Tests">
         <classes>
             <class name="tests.CartPageTests"/>
+        </classes>
+    </test>
+
+    <!-- Checkout Tests -->
+    <test name="Checkout Tests">
+        <classes>
+            <class name="tests.CheckoutTests"/>
         </classes>
     </test>
 </suite>
