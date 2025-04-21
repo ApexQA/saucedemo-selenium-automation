@@ -3,7 +3,6 @@ package swaglabs.utilities;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import swaglabs.drivers.BrowserFactory;
 import swaglabs.drivers.DriverManager;
 
 public class BaseTest {
@@ -12,7 +11,7 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
         String browser = ConfigReader.getProperty("browser");
-        driver = DriverManager.createInstance(browser); // Use DriverManager [[5]]
+        driver = DriverManager.createInstance(browser);
         driver.manage().window().maximize();
         driver.get(ConfigReader.getProperty("app.url"));
     }

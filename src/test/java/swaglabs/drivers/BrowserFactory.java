@@ -11,11 +11,35 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
+import java.nio.file.Files;
 import java.util.Map;
 
 public class BrowserFactory {
     public static WebDriver getBrowser(String browserName) {
         switch (browserName.toLowerCase()) {
+
+            case "chrome":
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--start-maximized");
+                chromeOptions.addArguments("--disable-extensions");
+                chromeOptions.addArguments("--disable-notifications");
+                chromeOptions.addArguments("--remote-allow-origins=*");
+
+                Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
+                        "credentials_enable_service", false,
+                        "profile.password_manager_enabled", false,
+                        "autofill.profile.enabled", false);
+                chromeOptions.setExperimentalOption("prefs", chromePrefs);
+                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+
+                // Create unique user data directory
+                try {
+                    String userDataDir = Files.createTempDirectory("chrome-user-data").toString();
+                    chromeOptions.addArguments("--user-data-dir=" + userDataDir);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to create temp directory", e);
+                }
+                return new ChromeDriver(chromeOptions);
 
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -41,29 +65,20 @@ public class BrowserFactory {
                 edgeOptions.addArguments("--disable-extensions");
                 edgeOptions.addArguments("--disable-notifications");
                 edgeOptions.addArguments("--remote-allow-origins=*");
-                Map<String, Object> edgePrefs = Map.of("profile.default_content_setting_values.notifications", false,
+
+                // Set preferences for Edge
+                Map<String, Object> edgePrefs = Map.of(
+                        "profile.default_content_setting_values.notifications", false,
                         "credentials_enable_service", false,
                         "profile.password_manager_enabled", false,
-                        "autofill.profile.enabled", false);
+                        "autofill.profile.enabled", false
+                );
                 edgeOptions.setExperimentalOption("prefs", edgePrefs);
                 edgeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                //chromeOptions.addArguments("--headless");
                 return new EdgeDriver(edgeOptions);
 
             default:
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--disable-extensions");
-                chromeOptions.addArguments("--disable-notifications");
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
-                        "credentials_enable_service", false,
-                        "profile.password_manager_enabled", false,
-                        "autofill.profile.enabled", false);
-                chromeOptions.setExperimentalOption("prefs", chromePrefs);
-                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                //chromeOptions.addArguments("--headless");
-                return new ChromeDriver(chromeOptions);
+                throw new IllegalArgumentException("Unsupported browser: " + browserName);
         }
     }
 }
