@@ -26,7 +26,7 @@ public class LoginPage {
 
     //Navigate to the login page
     public void navigateToLoginPage() {
-        BrowserActions.navigateToURL(driver,"https://www.saucedemo.com/v1/");
+        BrowserActions.navigateToURL(driver,"https://www.saucedemo.com/");
     }
 
 
@@ -53,7 +53,7 @@ public class LoginPage {
     //Validations
 
     public LoginPage assertSuccessfulLogin () {
-        Assert.assertEquals(BrowserActions.getCurrentURL(driver),"https://www.saucedemo.com/v1/inventory.html");
+        Assert.assertEquals(BrowserActions.getCurrentURL(driver),"https://www.saucedemo.com/inventory.html");
         return this;
     }
 
