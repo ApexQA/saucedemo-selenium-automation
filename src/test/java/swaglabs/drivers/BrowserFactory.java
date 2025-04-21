@@ -20,10 +20,12 @@ public class BrowserFactory {
 
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--disable-extensions");
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--remote-allow-origins=*");
+                chromeOptions.addArguments("--headless=new");
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
 
                 Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
                         "credentials_enable_service", false,
