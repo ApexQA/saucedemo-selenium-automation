@@ -24,7 +24,6 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    // Actions with explicit waits
     public void enterUsername(String username) {
         waitForElementVisible(usernameInput);
         usernameInput.sendKeys(username);
@@ -40,7 +39,6 @@ public class LoginPage extends BasePage {
         loginButton.click();
     }
 
-    // Fluent login method returning next page
     public InventoryPage login(String username, String password) {
         enterUsername(username);
         enterPassword(password);
@@ -48,11 +46,11 @@ public class LoginPage extends BasePage {
         return new InventoryPage(driver); // Assumes InventoryPage exists
     }
 
-    public boolean isLoginFormDisplayed() {
-        return ElementActions.isElementDisplayed(driver, usernameInput) &&
-                ElementActions.isElementDisplayed(driver, passwordInput) &&
-                ElementActions.isElementDisplayed(driver, loginButton); // [[1]][[5]]
-    }
+//    public boolean isLoginFormDisplayed() {
+//        return ElementActions.isElementDisplayed(driver, usernameInput) &&
+//                ElementActions.isElementDisplayed(driver, passwordInput) &&
+//                ElementActions.isElementDisplayed(driver, loginButton); // [[1]][[5]]
+//    }
 
     public String getErrorMessage() {
         return errorMessage.getText();

@@ -32,7 +32,6 @@ public class CartPage extends BasePage {
         Waits.waitForElementVisible(driver, checkoutButton);
     }
 
-    // Getters
     public int getCartItemCount() {
         return getCartItems().size();
     }
@@ -49,9 +48,15 @@ public class CartPage extends BasePage {
         return ElementActions.getText(driver, productPrices.get(index));
     }
 
-//    public String getTotalPrice() {
-//        return ElementActions.getText(driver, totalPrice).replace("Total: ", "");
-//    }
+    public CheckoutPage proceedToCheckout() {
+        Waits.waitForElementClickable(driver, checkoutButton); // Wait for clickability [[7]]
+        ElementActions.clickElement(driver, checkoutButton);
+        return new CheckoutPage(driver);
+    }
+
+    public boolean isCartDisplayed() {
+        return ElementActions.isElementDisplayed(driver, checkoutButton); // Verify cart state [[8]]
+    }
 
     public void removeAllItems() {
         int itemCount;
@@ -76,7 +81,6 @@ public class CartPage extends BasePage {
                 .replaceAll("[^a-z0-9-]", ""); // Sanitize special characters [[3]]
         String selector = String.format("[data-test='remove-%s']", formattedName);
 
-        // Add explicit wait for element presence [[4]]
         WebElement removeBtn = Waits.waitForElementPresent(driver, By.cssSelector(selector));
         ElementActions.clickElement(driver, removeBtn);
     }
@@ -95,14 +99,6 @@ public class CartPage extends BasePage {
                     "Price mismatch at index " + i
             );
         }
-        return this;
-    }
-
-    public CartPage validateEmptyCart() {
-        CustomSoftAssertions.softAssertion.assertTrue(
-                ElementActions.isElementDisplayed(driver, emptyCartMessage),
-                "Empty cart message not shown [[2]]"
-        );
         return this;
     }
 }

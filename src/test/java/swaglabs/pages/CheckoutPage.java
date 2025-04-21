@@ -1,14 +1,15 @@
+// CheckoutPage.java
 package swaglabs.pages;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import swaglabs.utilities.CustomSoftAssertions;
 import swaglabs.utilities.ElementActions;
-import swaglabs.utilities.Waits;
+
+import java.util.List;
 
 public class CheckoutPage extends BasePage {
+
     @FindBy(id = "first-name")
     private WebElement firstNameInput;
 
@@ -16,68 +17,61 @@ public class CheckoutPage extends BasePage {
     private WebElement lastNameInput;
 
     @FindBy(id = "postal-code")
-    private WebElement postalCodeInput;
+    private WebElement zipCodeInput;
 
     @FindBy(id = "continue")
     private WebElement continueButton;
 
-    @FindBy(id = "finish")
-    private WebElement finishButton;
+    @FindBy(id = "cancel")
+    private WebElement cancelButton;
 
-    @FindBy(css = ".complete-header")
-    private WebElement confirmationMessage;
+    @FindBy(className = "summary_info")
+    private List<WebElement> summaryItems;
+
+    @FindBy(className = "summary_total_label")
+    private WebElement totalLabel;
 
     @FindBy(css = "[data-test='error']")
     private WebElement errorMessage;
 
-    @FindBy(css = ".summary_total")
-    private WebElement totalAmount;
-
     public CheckoutPage(WebDriver driver) {
         super(driver);
-        Waits.waitForElementVisible(driver, firstNameInput);
     }
 
-    public void enterShippingInfo(String firstName, String lastName, String zip) {
-        ElementActions.sendData(driver, firstNameInput, firstName);
-        ElementActions.sendData(driver, lastNameInput, lastName);
-        ElementActions.sendData(driver, postalCodeInput, zip);
-        ((JavascriptExecutor) driver).executeScript("sauce:context=Entered shipping info");
+    // Input Actions
+    public CheckoutPage enterFirstName(String name) {
+        ElementActions.sendData(driver, firstNameInput, name);
+        return this;
     }
 
-    public void proceedToOverview() {
+    public CheckoutPage enterLastName(String name) {
+        ElementActions.sendData(driver, lastNameInput, name);
+        return this;
+    }
+
+    public CheckoutPage enterZipCode(String zip) {
+        ElementActions.sendData(driver, zipCodeInput, zip);
+        return this;
+    }
+
+    public void clickContinue() {
         ElementActions.clickElement(driver, continueButton);
-        Waits.waitForElementVisible(driver, totalAmount); // Wait for overview page [[3]]
     }
 
-    public void completeCheckout() {
-        ElementActions.clickElement(driver, finishButton);
-        Waits.waitForElementVisible(driver, confirmationMessage); // Ensure completion [[6]]
-    }
+//    public void clickCancel() {
+//        ElementActions.clickElement(driver, cancelButton);
+//    }
 
-    public boolean isConfirmationDisplayed() {
-        return ElementActions.isElementDisplayed(driver, confirmationMessage);
-    }
-
+    // Getters
     public String getErrorMessage() {
         return ElementActions.getText(driver, errorMessage);
     }
 
-    public CheckoutPage validateErrorMessage(String expectedMessage) {
-        CustomSoftAssertions.softAssertion.assertEquals(
-                getErrorMessage(),
-                expectedMessage,
-                "Error message mismatch [[4]]"
-        );
-        return this;
+    public String getTotalAmount() {
+        return ElementActions.getText(driver, totalLabel);
     }
 
-    public CheckoutPage validateTotalAmount(String expectedTotal) {
-        CustomSoftAssertions.softAssertion.assertEquals(
-                ElementActions.getText(driver, totalAmount),
-                expectedTotal,
-                "Total amount mismatch [[7]]"
-        );
-        return this;
+    public List<WebElement> getSummaryItems() {
+        return summaryItems;
     }
 }
