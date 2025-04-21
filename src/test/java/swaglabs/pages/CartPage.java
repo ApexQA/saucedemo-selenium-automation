@@ -101,4 +101,9 @@ public class CartPage extends BasePage {
         }
         return this;
     }
+
+    public CartPage clickCheckoutButton(){
+        ElementActions.clickElement(driver, checkoutButton);
+        return this;
+    }
 }
