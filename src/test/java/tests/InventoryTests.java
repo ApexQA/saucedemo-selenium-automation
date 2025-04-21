@@ -1,17 +1,18 @@
 package tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.InventoryPage;
-import SwagLabs.pages.LoginPage;
-import SwagLabs.utilities.BaseTest;
-import SwagLabs.utilities.ConfigReader;
+import swaglabs.pages.InventoryPage;
+import swaglabs.pages.LoginPage;
+import swaglabs.utilities.BaseTest;
+import swaglabs.utilities.ConfigReader;
+import swaglabs.utilities.ElementActions;
+import swaglabs.utilities.Waits;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,13 +26,11 @@ public class InventoryTests extends BaseTest {
 
     @BeforeMethod
     public void setupTest() {
-        // Automatic login
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
-        loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
-        loginPage.clickLogin();
-
-        // Initialize inventory page
+        loginPage.login(
+                ConfigReader.getProperty("valid.username"),
+                ConfigReader.getProperty("valid.password")
+        );
         inventoryPage = new InventoryPage(driver);
     }
 
@@ -43,21 +42,16 @@ public class InventoryTests extends BaseTest {
 
     @Test(priority = 2)
     public void testAddItemToCart() {
-        // 3. Add first item to cart
         inventoryPage.addFirstItemToCart();
-
-        // 4. Verify cart badge appears
-        Assert.assertTrue(driver.findElement(By.className("shopping_cart_badge")).isDisplayed(), "Item was not added to cart!");
+        WebElement cartBadge = inventoryPage.getCartBadge();
+        Waits.waitForElementVisible(driver, cartBadge);
+        Assert.assertTrue(cartBadge.isDisplayed(), "Item was not added to cart!");
     }
 
     @Test(priority = 3)
     public void testOpenShoppingCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.openShoppingCart();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlContains("/cart.html"));
-
         Assert.assertTrue(driver.getCurrentUrl().contains("/cart.html"), "Cart page did not open!");
     }
 
@@ -70,54 +64,47 @@ public class InventoryTests extends BaseTest {
     @Test(priority = 5)
     public void testAddMultipleItemsToCart() {
         inventoryPage.addFirstItemToCart();
-        inventoryPage.addFirstItemToCart(); // Add same item twice (quantity test)
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.className("shopping_cart_badge"), "2"));
-
-        Assert.assertEquals(
-                driver.findElement(By.className("shopping_cart_badge")).getText(),
-                "2",
-                "Quantity is incorrect!"
-        );
+        inventoryPage.addFirstItemToCart();
+        WebElement cartBadge = inventoryPage.getCartBadge();
+        Waits.waitForElementVisible(driver, cartBadge);
+        Assert.assertEquals(cartBadge.getText(), "2", "Quantity is incorrect!");
     }
 
     @Test(priority = 6)
     public void testPriceFilterLowToHigh() {
-        // تطبيق الفلتر والتحقق من الأسعار
         inventoryPage.selectFilter("Price (low to high)");
-
-        List<WebElement> prices = driver.findElements(By.className("inventory_item_price"));
-        List<Double> priceValues = prices.stream()
-                .map(p -> Double.parseDouble(p.getText().replace("$", "")))
+        List<Double> prices = inventoryPage.getItemPrices().stream()
+                .map(element -> Double.parseDouble(ElementActions.getText(driver, element).replace("$", "")))
                 .collect(Collectors.toList());
-
-        List<Double> sortedPrices = new ArrayList<>(priceValues);
-        Collections.sort(sortedPrices);
-
-        Assert.assertEquals(priceValues, sortedPrices, "Items are not sorted by price correctly!");
+        List<Double> sortedPrices = new java.util.ArrayList<>(prices);
+        sortedPrices.sort(Double::compareTo);
+        Assert.assertEquals(prices, sortedPrices, "Items are not sorted by price!");
     }
 
-//
+//    @Test(priority = 7)
 //    public void testLogoutFunctionality() {
+//        // Arrange
+//        LoginPage loginPage = new LoginPage(driver);
+//        loginPage.login("standard_user", "secret_sauce");
+//
+//        // Act
+//        InventoryPage inventoryPage = new InventoryPage(driver);
 //        inventoryPage.logout();
 //
-//        // Wait for the URL to change to the login page
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//        // Assert with synchronization
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 //        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/"));
 //
-//        Assert.assertEquals(
-//                driver.getCurrentUrl(),
-//                "https://www.saucedemo.com/", // تحقق من الرابط بالضبط
-//                "Logout failed or not redirected to login page!"
-//        );
+//        // Verify login page elements are present [[2]]
+//        Assert.assertTrue(loginPage.isLoginFormDisplayed(),
+//                "Logout failed - Login form not visible");
 //    }
 
     @Test(priority = 8)
     public void testItemPriceDisplay() {
         String price = inventoryPage.getFirstItemPrice();
         Assert.assertTrue(price.startsWith("$"), "Price format is incorrect!");
-        Assert.assertFalse(price.replace("$", "").isEmpty(), "Price value is missing!");
+        Assert.assertFalse(price.equals("$"), "Price value is missing!");
     }
 
     @Test(priority = 9)

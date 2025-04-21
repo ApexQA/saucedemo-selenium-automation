@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Saucedemo Automation Suite" parallel="tests" thread-count="3">
+<suite name="Saucedemo Automation Suite" >
     <!-- Login Tests -->
     <test name="Login Tests">
         <classes>
@@ -13,6 +13,7 @@
             <class name="tests.InventoryTests"/>
         </classes>
     </test>
+
     <!-- CartPage Tests -->
     <test name="CartPage Tests">
         <classes>

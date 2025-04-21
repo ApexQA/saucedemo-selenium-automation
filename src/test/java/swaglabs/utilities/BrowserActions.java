@@ -1,8 +1,10 @@
-package SwagLabs.utilities;
+package swaglabs.utilities;
 
 import org.openqa.selenium.WebDriver;
 
 public class BrowserActions {
+
+    //Constructor
     private BrowserActions() {
     }
 
@@ -26,6 +28,7 @@ public class BrowserActions {
         driver.navigate().refresh();
     }
 
+    //close Browser
     public static void closeBrowser(WebDriver driver) {
         driver.quit();
     }

@@ -1,33 +1,39 @@
 package tests;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import SwagLabs.pages.LoginPage;
-import SwagLabs.utilities.BaseTest;
-import SwagLabs.utilities.ConfigReader;
+import swaglabs.pages.LoginPage;
+import swaglabs.utilities.BaseTest;
+import swaglabs.utilities.ConfigReader;
 
 import java.time.Duration;
 
-public class LoginTests  extends BaseTest {
-
-    @Test(timeOut = 10000)
+public class LoginTests extends BaseTest {
+    @Test
     public void testValidLogin() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(
+                ConfigReader.getProperty("valid.username"),
+                ConfigReader.getProperty("valid.password")
+        );
 
-        loginPage.enterUsername(ConfigReader.getProperty("valid.username"));
-        loginPage.enterPassword(ConfigReader.getProperty("valid.password"));
-        loginPage.clickLogin();
+        // Verify successful login via URL [[4]]
+        Assert.assertEquals(
+                driver.getCurrentUrl(),
+                "https://www.saucedemo.com/inventory.html",
+                "Login failed: URL mismatch"
+        );
+    }
 
-        // Wait for the URL to contain "/inventory.html"
-        wait.until(ExpectedConditions.urlContains("/inventory.html"));
-        System.out.println("Login successful! Current URL: " + driver.getCurrentUrl());
+    @Test
+    public void testInvalidLogin() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login("invalid_user", "invalid_password");
 
-        // Add assertions to verify login success
-        String expectedUrl = "https://www.saucedemo.com/inventory.html";
-        String actualUrl = driver.getCurrentUrl();
-        Assert.assertEquals(actualUrl, expectedUrl, "Login failed: URL mismatch");
+        Assert.assertTrue(
+                loginPage.getErrorMessage().contains("Epic sadface: Username and password do not match"),
+                "Error message not displayed"
+        );
     }
 }

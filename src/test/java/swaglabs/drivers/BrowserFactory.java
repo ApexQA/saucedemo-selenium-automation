@@ -1,4 +1,4 @@
-package SwagLabs.Drivers;
+package swaglabs.drivers;
 
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
@@ -14,8 +14,8 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.util.Map;
 
 public class BrowserFactory {
-    public static WebDriver getBrowser(String browserName){
-        switch (browserName.toLowerCase()){
+    public static WebDriver getBrowser(String browserName) {
+        switch (browserName.toLowerCase()) {
 
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
