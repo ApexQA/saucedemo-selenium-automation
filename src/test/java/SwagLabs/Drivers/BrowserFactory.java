@@ -44,7 +44,8 @@ public class BrowserFactory {
                 Map<String, Object> edgePrefs = Map.of("profile.default_content_setting_values.notifications", false,
                         "credentials_enable_service", false,
                         "profile.password_manager_enabled", false,
-                        "autofill.profile.enabled", false);
+                        "autofill.profile.enabled", false,
+                        "profile.password_manager_leak_detection", false);
                 edgeOptions.setExperimentalOption("prefs", edgePrefs);
                 edgeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 //chromeOptions.addArguments("--headless");
@@ -59,7 +60,8 @@ public class BrowserFactory {
                 Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
                         "credentials_enable_service", false,
                         "profile.password_manager_enabled", false,
-                        "autofill.profile.enabled", false);
+                        "autofill.profile.enabled", false,
+                        "profile.password_manager_leak_detection", false);
                 chromeOptions.setExperimentalOption("prefs", chromePrefs);
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 //chromeOptions.addArguments("--headless");

@@ -1,5 +1,7 @@
 package SwagLabs.pages;
 
+import SwagLabs.utilities.BrowserActions;
+import SwagLabs.utilities.PropertiesUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -21,13 +23,16 @@ public class LoginPage {
         driver.findElement(usernameInput).sendKeys(username);
     }
 
-    public void enterPassword(String password) {
-
+    public LoginPage enterPassword(String password) {
         driver.findElement(passwordInput).sendKeys(password);
+        return this;
     }
 
     public void clickLogin() {
-
         driver.findElement(loginButton).click();
+    }
+
+    public void navigateToLoginPage(){
+        BrowserActions.navigateToURL(driver, PropertiesUtils.getPropertyValue("baseURL"));
     }
 }

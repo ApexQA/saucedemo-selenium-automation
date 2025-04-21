@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.InventoryPage;
+import SwagLabs.pages.InventoryPage;
 import SwagLabs.pages.LoginPage;
 import SwagLabs.utilities.BaseTest;
 import SwagLabs.utilities.ConfigReader;

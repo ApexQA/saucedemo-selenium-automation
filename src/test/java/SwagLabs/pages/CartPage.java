@@ -15,10 +15,9 @@ public class CartPage {
     //Locators
     private final By productName= By.cssSelector(".inventory_item_name");
     private final By productPrice= By.cssSelector(".inventory_item_price");
-    private final By checkoutButton=By.linkText("CHECKOUT");
+    private final By checkoutButton = By.cssSelector(".checkout_button");
 
     //Actions
-
     public String getProductName(){
         return ElementActions.getText(driver,productName);
     }
@@ -26,7 +25,7 @@ public class CartPage {
         return ElementActions.getText(driver,productPrice);
     }
     public CartPage clickCheckoutButton(){
-        ElementActions.clickElement(driver,checkoutButton);
+        ElementActions.clickElement(driver, checkoutButton);
         return this;
     }
 
