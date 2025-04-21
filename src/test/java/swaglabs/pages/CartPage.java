@@ -9,6 +9,7 @@ import swaglabs.utilities.*;
 import java.util.List;
 
 public class CartPage extends BasePage {
+    //locators
     @FindBy(css = ".cart_item")
     private List<WebElement> cartItems;
 
@@ -21,12 +22,15 @@ public class CartPage extends BasePage {
     @FindBy(id = "checkout")
     private WebElement checkoutButton;
 
-    @FindBy(css = ".summary_total")
-    private WebElement totalPrice;
 
     @FindBy(css = ".empty_cart_message")
     private WebElement emptyCartMessage;
 
+    @FindBy(id ="continue-shopping")
+    private WebElement continueShoppingButton;
+
+
+    //Constructor
     public CartPage(WebDriver driver) {
         super(driver);
         Waits.waitForElementVisible(driver, checkoutButton);
@@ -56,6 +60,11 @@ public class CartPage extends BasePage {
 
     public boolean isCartDisplayed() {
         return ElementActions.isElementDisplayed(driver, checkoutButton); // Verify cart state [[8]]
+    }
+
+    public InventoryPage clickContinueShoppingButton() {
+        ElementActions.clickElement(driver, continueShoppingButton);
+        return new InventoryPage(driver);
     }
 
     public void removeAllItems() {
@@ -99,6 +108,13 @@ public class CartPage extends BasePage {
                     "Price mismatch at index " + i
             );
         }
+        return this;
+    }
+
+    public CartPage validateEmptyCart() {
+        List<WebElement> items = driver.findElements(By.cssSelector(".cart_item"));
+        CustomSoftAssertions.softAssertion.assertEquals(
+                items.size(), 0, "Cart is not empty as expected");
         return this;
     }
 
