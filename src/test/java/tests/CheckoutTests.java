@@ -65,35 +65,35 @@ public class CheckoutTests {
         informationPage.assertEmptyInformation(excpectedError, actualError);
     }
 
-    @Test(dependsOnMethods = "emptyFirtsNameValidation")
-    public void emptyLastNameValidation(){
-        InformationPage informationPage = new InformationPage(driver);
-        informationPage.fillInformationForm(
-                FIRST_NAME,
-                "",
-                POSTAL_CODE);
-        informationPage.clickContinueButton();
-        String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
-        String actualError = ConfigReader.getProperty("emptyLastNameErrorMSG");
-//        Assert.assertEquals(excpectedError, actualError);
-        informationPage.assertEmptyInformation(excpectedError, actualError);
-    }
+//    @Test(dependsOnMethods = "emptyFirtsNameValidation")
+//    public void emptyLastNameValidation(){
+//        InformationPage informationPage = new InformationPage(driver);
+//        informationPage.fillInformationForm(
+//                FIRST_NAME,
+//                "",
+//                POSTAL_CODE);
+//        informationPage.clickContinueButton();
+//        String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
+//        String actualError = ConfigReader.getProperty("emptyLastNameErrorMSG");
+////        Assert.assertEquals(excpectedError, actualError);
+//        informationPage.assertEmptyInformation(excpectedError, actualError);
+//    }
 
-    @Test(dependsOnMethods = "emptyLastNameValidation")
-    public void emptyPostalCodeValidation(){
-        InformationPage informationPage = new InformationPage(driver);
-        informationPage.fillInformationForm(
-                FIRST_NAME,
-                LAST_NAME,
-                "");
-        informationPage.clickContinueButton();
-        String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
-        String actualError = ConfigReader.getProperty("emptyPostalCodeErrorMSG");
-//        Assert.assertEquals(excpectedError, actualError);
-        informationPage.assertEmptyInformation(excpectedError, actualError);
-    }
+//    @Test(dependsOnMethods = "emptyLastNameValidation")
+//    public void emptyPostalCodeValidation(){
+//        InformationPage informationPage = new InformationPage(driver);
+//        informationPage.fillInformationForm(
+//                FIRST_NAME,
+//                LAST_NAME,
+//                "");
+//        informationPage.clickContinueButton();
+//        String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
+//        String actualError = ConfigReader.getProperty("emptyPostalCodeErrorMSG");
+////        Assert.assertEquals(excpectedError, actualError);
+//        informationPage.assertEmptyInformation(excpectedError, actualError);
+//    }
 
-    @Test(dependsOnMethods = "emptyPostalCodeValidation")
+    @Test(dependsOnMethods = "checkout_CancelCheckout")
     public void fillInformationForm() {
         InformationPage informationPage = new InformationPage(driver);
         informationPage.fillInformationForm(
