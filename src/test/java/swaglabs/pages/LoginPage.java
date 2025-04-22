@@ -4,6 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import swaglabs.utilities.ElementActions;
+import swaglabs.utilities.Waits;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class LoginPage extends BasePage {
     // Locators with @FindBy
@@ -54,5 +58,18 @@ public class LoginPage extends BasePage {
 
     public String getErrorMessage() {
         return errorMessage.getText();
+    }
+
+    public LoginPage verifyErrorMessage(String expectedMessage) {
+        String actualMessage = errorMessage.getText().trim();
+        assertTrue(actualMessage.contains(expectedMessage),
+                String.format("Expected: %s\nActual: %s", expectedMessage, actualMessage));
+        return this;
+    }
+
+    public LoginPage assertUnsuccessfulLogin() {
+        Waits.waitForElementVisible(driver, errorMessage);
+        assertFalse(errorMessage.getText().isEmpty(), "Error message not shown");
+        return this;
     }
 }
