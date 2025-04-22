@@ -71,4 +71,9 @@ public class Waits {
         return new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.presenceOfElementLocated(locator)); // [[4]]
     }
+
+//    public static void waitForUrlContains(WebDriver driver, String partialUrl) {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        wait.until(ExpectedConditions.urlContains(partialUrl));
+//    }
 }

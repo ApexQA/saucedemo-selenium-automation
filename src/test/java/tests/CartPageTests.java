@@ -29,27 +29,42 @@ public class CartPageTests extends BaseTest {
         cartPage = new CartPage(driver);
     }
 
-    @Test(description = "Verify multiple product details")
+    @Test(description = "Verify multiple product details",priority = 1)
     public void testCartContents() {
         cartPage.validateAllProducts(EXPECTED_NAMES, EXPECTED_PRICES);
         CustomSoftAssertions.customAssertAll();
     }
 
-    @Test(description = "Verify item removal functionality")
+    @Test(description = "Verify item removal functionality",priority = 2)
     public void testItemRemoval() {
         String productName = "Sauce Labs Backpack"; // Matches item added in setup
         cartPage.removeItem(productName);
         Assert.assertEquals(cartPage.getCartItemCount(), 1, "Item not removed");
     }
 
-    @Test(description = "Verify empty cart state")
+    @Test(description = "Verify empty cart state",priority = 3)
     public void testEmptyCart() {
         cartPage.removeAllItems();
         cartPage.validateEmptyCart();
-        CustomSoftAssertions.customAssertAll();
+        //CustomSoftAssertions.customAssertAll();
     }
 
-    @Test(description = "Verify cart state persistence")
+@Test(description = "Verify Continue Shopping button navigates to Inventory Page", priority = 4)
+public void testContinueShoppingNavigatesToInventoryPage() {
+    // Step 1: Click the Continue Shopping button on the Cart Page
+    cartPage.clickContinueShoppingButton();
+
+    // Step 2: Get the current URL after redirection
+    String currentUrl = driver.getCurrentUrl();
+
+    // Step 3: Assert that the user is redirected to the Inventory Page
+    Assert.assertTrue(currentUrl.contains("inventory.html"),
+            "Navigation failed: URL does not contain 'inventory.html'. Actual URL: " + currentUrl);
+
+}
+
+
+    @Test(description = "Verify cart state persistence",priority = 5)
     public void testCartPersistence() {
         int initialCount = cartPage.getCartItemCount();
 

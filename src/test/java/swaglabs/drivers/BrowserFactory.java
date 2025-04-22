@@ -56,6 +56,7 @@ public class BrowserFactory {
                 chromeOptions.addArguments("--disable-extensions");
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--remote-allow-origins=*");
+                chromeOptions.addArguments("--incognito");
                 Map<String, Object> chromePrefs = Map.of("profile.default_content_setting_values.notifications", false,
                         "credentials_enable_service", false,
                         "profile.password_manager_enabled", false,

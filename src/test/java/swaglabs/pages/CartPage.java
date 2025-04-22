@@ -26,7 +26,7 @@ public class CartPage extends BasePage {
     @FindBy(css = ".empty_cart_message")
     private WebElement emptyCartMessage;
 
-    @FindBy(id ="continue-shopping")
+    @FindBy(css= "#continue-shopping")
     private WebElement continueShoppingButton;
 
 
@@ -63,6 +63,7 @@ public class CartPage extends BasePage {
     }
 
     public InventoryPage clickContinueShoppingButton() {
+        Waits.waitForElementClickable(driver, continueShoppingButton);
         ElementActions.clickElement(driver, continueShoppingButton);
         return new InventoryPage(driver);
     }
