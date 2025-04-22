@@ -1,7 +1,5 @@
 package tests;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import swaglabs.drivers.DriverManager;
 import swaglabs.pages.*;
 import swaglabs.utilities.BrowserActions;
@@ -13,16 +11,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import swaglabs.utilities.ElementActions;
-import swaglabs.utilities.Waits;
 
 public class CheckoutTests {
     private WebDriver driver;
     String FIRST_NAME = ConfigReader.getProperty("information-form.firstName");
     String LAST_NAME = ConfigReader.getProperty("information-form.lastName");
     String POSTAL_CODE = ConfigReader.getProperty("information-form.postalCode");
-
-    @FindBy(css = "[data-test='shopping-cart-link']")
-    private WebElement cartIcon;
+    private final By  cartIcon = By.cssSelector("[data-test='shopping-cart-link']");
 
     // Test methods with proper dependencies
     @Test(priority = 1)
@@ -45,8 +40,7 @@ public class CheckoutTests {
 
     @Test(dependsOnMethods = "addingProductToCart")
     public void checkoutProduct() {
-        Waits.waitForElementVisible(driver, cartIcon); // Add wait [[9]]
-        ElementActions.clickElement(driver, cartIcon);
+        ElementActions.clickElementBy(driver, cartIcon);
     }
 
     @Test(dependsOnMethods = "checkoutProduct")
@@ -57,21 +51,22 @@ public class CheckoutTests {
         String actualURL = ConfigReader.getProperty("cart.url");
         String expectedURL = BrowserActions.getCurrentURL(driver);
         Assert.assertEquals(actualURL, expectedURL, message);
-        ElementActions.clickElement(driver, cartIcon);
+        ElementActions.clickElementBy(driver, cartIcon);
     }
 
     @Test(dependsOnMethods = "checkout_CancelCheckout")
-    public void emptyFirtsNameValidation() {
+    public void emptyFirtsNameValidation(){
         new CartPage(driver).clickCheckoutButton();
         InformationPage informationPage = new InformationPage(driver);
         informationPage.clickContinueButton();
         String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
         String actualError = ConfigReader.getProperty("emptyFirstNameErrorMSG");
+//        Assert.assertEquals(excpectedError, actualError);
         informationPage.assertEmptyInformation(excpectedError, actualError);
     }
 
     @Test(dependsOnMethods = "emptyFirtsNameValidation")
-    public void emptyLastNameValidation() {
+    public void emptyLastNameValidation(){
         InformationPage informationPage = new InformationPage(driver);
         informationPage.fillInformationForm(
                 FIRST_NAME,
@@ -80,11 +75,12 @@ public class CheckoutTests {
         informationPage.clickContinueButton();
         String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
         String actualError = ConfigReader.getProperty("emptyLastNameErrorMSG");
+//        Assert.assertEquals(excpectedError, actualError);
         informationPage.assertEmptyInformation(excpectedError, actualError);
     }
 
     @Test(dependsOnMethods = "emptyLastNameValidation")
-    public void emptyPostalCodeValidation() {
+    public void emptyPostalCodeValidation(){
         InformationPage informationPage = new InformationPage(driver);
         informationPage.fillInformationForm(
                 FIRST_NAME,
@@ -93,6 +89,7 @@ public class CheckoutTests {
         informationPage.clickContinueButton();
         String excpectedError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
         String actualError = ConfigReader.getProperty("emptyPostalCodeErrorMSG");
+//        Assert.assertEquals(excpectedError, actualError);
         informationPage.assertEmptyInformation(excpectedError, actualError);
     }
 

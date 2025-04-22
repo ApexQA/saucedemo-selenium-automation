@@ -52,6 +52,8 @@ public class InventoryTests extends BaseTest {
     public void testOpenShoppingCart() {
         inventoryPage.addFirstItemToCart();
         inventoryPage.openShoppingCart();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/cart.html"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/cart.html"), "Cart page did not open!");
     }
 
@@ -63,8 +65,8 @@ public class InventoryTests extends BaseTest {
 
     @Test(priority = 5)
     public void testAddMultipleItemsToCart() {
-        inventoryPage.addFirstItemToCart();
-        inventoryPage.addFirstItemToCart();
+        inventoryPage.addItemToCartByIndex(0);
+        inventoryPage.addItemToCartByIndex(1);
         WebElement cartBadge = inventoryPage.getCartBadge();
         Waits.waitForElementVisible(driver, cartBadge);
         Assert.assertEquals(cartBadge.getText(), "2", "Quantity is incorrect!");

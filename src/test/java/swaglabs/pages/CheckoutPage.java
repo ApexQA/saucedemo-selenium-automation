@@ -1,5 +1,6 @@
 package swaglabs.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,8 +11,7 @@ public class CheckoutPage {
     //variables
     private WebDriver driver;
 
-    @FindBy(id = "checkout")
-    private WebElement checkoutButton;
+    private final By checkoutButton = By.id("checkout");
 
     //constructor
     public CheckoutPage(WebDriver driver) {
@@ -21,6 +21,6 @@ public class CheckoutPage {
     //Actions
     // @Step("Click on checkout button")
     public void clickCheckoutButton() {
-        ElementActions.clickElement(driver, checkoutButton);
+        ElementActions.clickElementBy(driver, checkoutButton);
     }
 }

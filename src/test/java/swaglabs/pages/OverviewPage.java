@@ -1,5 +1,6 @@
 package swaglabs.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,8 +11,7 @@ public class OverviewPage {
     private WebDriver driver;
 
     //locator
-    @FindBy(id = "finish")
-    private WebElement finishButton;
+    private final By finishButton = By.id("finish");
 
     //constructor
     public OverviewPage(WebDriver driver) {
@@ -21,7 +21,7 @@ public class OverviewPage {
     //actions
     //@Step("Click on finish button")
     public ConfirmationPage clickOnFinishButton() {
-        ElementActions.clickElement(driver, finishButton);
+        ElementActions.clickElementBy(driver, finishButton);
         return new ConfirmationPage(driver);
     }
 }

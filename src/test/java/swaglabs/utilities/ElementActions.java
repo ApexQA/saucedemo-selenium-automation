@@ -8,14 +8,26 @@ public class ElementActions {
     private ElementActions() {
     }
 
-    //send keys
-    public static void sendData(WebDriver driver, WebElement element, String data) {
-        Waits.waitForElementVisible(driver, element);
-        Scrolling.scrollToElement(driver, element);
-        element.sendKeys(data);
+    // By Selectors
+    public static void sendDataBy(WebDriver driver, By locator, String data) {
+        Waits.waitForElementVisibleBy(driver, locator);
+        Scrolling.scrollToElementBy(driver, locator);
+        findElement(driver, locator).sendKeys(data);
     }
 
-    //click
+    public static void clickElementBy(WebDriver driver, By locator) {
+        Waits.waitForElementVisibleBy(driver, locator);
+        Scrolling.scrollToElementBy(driver, locator);
+        findElement(driver, locator).click();
+    }
+
+    public static String getText(WebDriver driver, By locator) {
+        Waits.waitForElementVisibleBy(driver, locator);
+        Scrolling.scrollToElementBy(driver, locator);
+        return findElement(driver, locator).getText();
+    }
+
+    // Web Element Selectors
     public static void clickElement(WebDriver driver, WebElement element) {
         Waits.waitForElementClickable(driver, element);
         Scrolling.scrollToElement(driver, element);
@@ -29,11 +41,11 @@ public class ElementActions {
 
     public static boolean isElementDisplayed(WebDriver driver, WebElement element) {
         try {
-            Waits.waitForElementVisible(driver, element); // Ensure visibility check [[2]]
-            return element.isDisplayed(); // Native Selenium method [[5]]
+            Waits.waitForElementVisible(driver, element);
+            return element.isDisplayed();
         } catch (Exception e) {
             System.out.println("Element not visible or not found");
-            return false; // Element not visible or not found
+            return false;
         }
     }
 

@@ -15,9 +15,14 @@ public class Waits {
     private Waits() {
     }
 
-    public static void waitForElementVisible(WebDriver driver, WebElement element) {
+    public static void waitForElementVisible(WebDriver driver,WebElement element) {
         new WebDriverWait(driver, DEFAULT_TIMEOUT)
                 .until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static void waitForElementVisibleBy(WebDriver driver,By element) {
+        new WebDriverWait(driver, DEFAULT_TIMEOUT)
+                .until(ExpectedConditions.visibilityOfElementLocated(element));
     }
 
     public static void waitForElementClickable(WebDriver driver, WebElement element) {

@@ -4,8 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import swaglabs.utilities.*;
 
+import java.time.Duration;
 import java.util.List;
 
 public class CartPage extends BasePage {
@@ -22,6 +25,7 @@ public class CartPage extends BasePage {
     @FindBy(id = "checkout")
     private WebElement checkoutButton;
 
+    private final By checkoutButtonBy = By.id("checkout");
 
     @FindBy(css = ".empty_cart_message")
     private WebElement emptyCartMessage;
@@ -119,7 +123,7 @@ public class CartPage extends BasePage {
     }
 
     public CartPage clickCheckoutButton(){
-        ElementActions.clickElement(driver, checkoutButton);
+        ElementActions.clickElementBy(driver, checkoutButtonBy);
         return this;
     }
 }

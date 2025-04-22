@@ -1,5 +1,6 @@
 package swaglabs.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,8 +17,7 @@ public class ConfirmationPage {
     }
 
     //locators
-    @FindBy(css = "[data-test='complete-header']")
-    private WebElement confirmationMessage;
+    private final By confirmationMessage = By.cssSelector("[data-test='complete-header']");
 
     //actions
     //@Step("Get confirmation message")

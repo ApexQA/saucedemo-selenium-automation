@@ -104,4 +104,13 @@ public class InventoryPage extends BasePage {
     public List<WebElement> getItemPrices() {
         return itemPrices;
     }
+
+    public void addItemToCartByIndex(int index) {
+        List<WebElement> addToCartButtons = driver.findElements(By.cssSelector(".inventory_item .btn_inventory"));
+        if (index < addToCartButtons.size()) {
+            addToCartButtons.get(index).click();
+        } else {
+            throw new IllegalArgumentException("Invalid item index: " + index);
+        }
+    }
 }
