@@ -30,8 +30,5 @@ public class Validations {
     public static void validatePageTitle(WebDriver driver, String expected) {
         Assert.assertEquals(BrowserActions.getPageTitle(driver), expected);
     }
-//    public static void validateContains(String actual, String expectedSubstring, String message) {
-//        Assert.assertTrue(actual.contains(expectedSubstring),
-//                message + "\nExpected to contain: " + expectedSubstring + "\nBut was: " + actual);
-//    }
+
 }
